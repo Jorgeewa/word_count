@@ -6,6 +6,26 @@ from collections import defaultdict
 import glob
 
 
+def read_write_reduce(index: int) -> None:
+    count = defaultdict(int)
+    for name in glob.glob(f"intermediate/*[{index}]"):
+        print(name)
+        f = open(name, "r")
+        data = f.read()
+        data = data.split()
+        
+        for text in data:
+            count[text] +=1
+            
+        f.close()
+    file_name = f"out/out-{index}"
+    fo = open(file_name, "a+")
+    
+    for k,v in count.items():
+        data = f"{k} {v} \n" 
+        fo.write(data)
+    fo.close()
+
 def reduce_task():
     _, channel = connect(QueueName.REDUCE.name)
     
@@ -13,25 +33,8 @@ def reduce_task():
         print(" [x] Received %r" % body)
         body = json.loads(body)
         index = int(body["index"])
-        count = defaultdict(int)
-        for name in glob.glob(f"intermediate/*[{index}]"):
-            print(name)
-            f = open(name, "r")
-            data = f.read()
-            data = data.split()
-            
-            for text in data:
-                count[text] +=1
-                
-            f.close()
-        file_name = f"out/out-{index}"
-        fo = open(file_name, "a+")
-        
-        
-        for k,v in count.items():
-            data = f"{k} {v} \n" 
-            fo.write(data)
-        fo.close()
+        read_write_reduce(index)
+
 
     channel.basic_consume(QueueName.REDUCE.name, on_message_callback=callback, auto_ack=True)
 
