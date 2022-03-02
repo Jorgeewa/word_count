@@ -9,7 +9,7 @@ from worker_reduce import read_write_reduce
 
 
 def test_read_write_map():
-    read_write_map(f"inputs/my_test.txt", 0, 72, 8)
+    read_write_map(f"inputs/my_test.txt", 0, 72, 8, True)
     
     f = open("intermediate/mr-0-4")
     line = f.readline()

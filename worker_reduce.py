@@ -4,27 +4,49 @@ import os, sys
 import json
 from collections import defaultdict
 import glob
+import traceback
 
 
 def read_write_reduce(index: int) -> None:
+    '''
+        This function gets all the files with a certain reduce number and does the word count.
+
+        Returns None
+
+        Parameters
+        ----------
+        index: the reduce number
+
+        Returns
+        --------
+        None
+    '''
     count = defaultdict(int)
     for name in glob.glob(f"intermediate/*[{index}]"):
-        print(name)
-        f = open(name, "r")
-        data = f.read()
-        data = data.split()
-        
-        for text in data:
-            count[text] +=1
+        try:
+            f = open(name, "r")
+            data = f.read()
+            data = data.split()
             
-        f.close()
+            for text in data:
+                count[text] +=1
+        except:
+            error = traceback.format_exc()
+            print(error)
+        finally:
+            f.close()
     file_name = f"out/out-{index}"
-    fo = open(file_name, "a+")
+    try:
+        fo = open(file_name, "a+")
     
-    for k,v in count.items():
-        data = f"{k} {v} \n" 
-        fo.write(data)
-    fo.close()
+        for k,v in count.items():
+            data = f"{k} {v} \n" 
+            fo.write(data)
+    except:
+        error = traceback.format_exc()
+        print(error)
+    finally:
+        fo.close()
 
 def reduce_task():
     _, channel = connect(QueueName.REDUCE.name)
