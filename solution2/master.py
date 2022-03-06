@@ -58,7 +58,6 @@ def endpoints(data: Uri):
         return pickle.dumps(data)
     
     if data["uri"] == Uri.STATUS_MAP:
-        print(q_map.counter, q_map.is_working)
         data = {"uri": Uri.STATUS_MAP, "data": q_map.is_finished_jobs()}
         return pickle.dumps(data)
     

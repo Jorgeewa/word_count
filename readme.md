@@ -60,4 +60,4 @@ Queue: The queue is not persisted and this was why I used rabbitmq the first tim
 Testing: The project can be tested by doing: pytest test.py.
 The main functions in the project have been tested.
 
-To run a new test, one should always clear the old data from intermediate and out folders or simply run the test which will do this automatically.
+To run the project, one should always clear the old data from intermediate and out folders.

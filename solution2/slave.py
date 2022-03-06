@@ -17,7 +17,7 @@ def map_daemon(sock):
             message = pickle.loads(message)
             if message["uri"] == Uri.STATUS_MAP:
                 if message["data"]:
-                    print("I mapping tasks completed")
+                    print("Mapping tasks completed")
                     break
                 else:
                     packet = {"uri": Uri.GET_MAP, "data": None}
@@ -30,7 +30,6 @@ def map_daemon(sock):
                     read_write_map(message["data"]["file_name"], message["data"]["i"], message["data"]["partition_size"], message["data"]["m"])
                     # Added so more workers can be started
                     time.sleep(3)
-                    print("finished one, map")
                     packet = {"uri": Uri.FINISHED_MAP, "data": None}
                     packet = pickle.dumps(packet)
                     sock.send(packet)
