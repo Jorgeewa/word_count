@@ -31,8 +31,6 @@ def read_write_map(file_name: str, offset: int, limit: int, m:int, is_last: bool
     try:    
         f = open(file_name, "r")
         f.seek(offset * limit)
-        if not is_last:
-            limit -= 1
         data = f.read(limit)
         line_by_line = data.split()
 
